@@ -2,10 +2,19 @@ import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
+// Create axios instance with default config
+const axiosInstance = axios.create({
+  baseURL: API_BASE_URL,
+  withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json'
+  }
+});
+
 const chatService = {
   async sendMessage(message, personality) {
     try {
-      const response = await axios.post(`${API_BASE_URL}/chat/chat`, {
+      const response = await axiosInstance.post('/chat/chat', {
         message,
         personality
       });
@@ -18,7 +27,7 @@ const chatService = {
 
   async getChatHistory(personality) {
     try {
-      const response = await axios.get(`${API_BASE_URL}/chat/history/${personality}`);
+      const response = await axiosInstance.get(`/chat/history/${personality}`);
       return response.data.history;
     } catch (error) {
       console.error('Error getting chat history:', error);
@@ -28,7 +37,7 @@ const chatService = {
 
   async clearChatHistory(personality) {
     try {
-      await axios.delete(`${API_BASE_URL}/chat/history/${personality}`);
+      await axiosInstance.delete(`/chat/history/${personality}`);
     } catch (error) {
       console.error('Error clearing chat history:', error);
       throw error;
@@ -42,6 +51,7 @@ const chatService = {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ personality }),
       });
 
