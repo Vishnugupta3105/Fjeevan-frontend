@@ -14,7 +14,7 @@ const axiosInstance = axios.create({
 const chatService = {
   async sendMessage(message, personality, language = 'english', systemPrompt = '') {
     try {
-      const response = await axiosInstance.post('/chat', {
+      const response = await axiosInstance.post('/api/chat', {
         message,
         personality,
         language,
@@ -29,7 +29,7 @@ const chatService = {
 
   async getChatHistory(personality) {
     try {
-      const response = await axiosInstance.get(`/chat/history/${personality}`);
+      const response = await axiosInstance.get(`/api/chat/history/${personality}`);
       return response.data.history;
     } catch (error) {
       console.error('Error getting chat history:', error);
@@ -39,7 +39,7 @@ const chatService = {
 
   async clearChatHistory(personality) {
     try {
-      await axiosInstance.delete(`/chat/history/${personality}`);
+      await axiosInstance.delete(`/api/chat/history/${personality}`);
     } catch (error) {
       console.error('Error clearing chat history:', error);
       throw error;
@@ -48,7 +48,7 @@ const chatService = {
 
   async startVoiceChat(personality) {
     try {
-      const response = await fetch(`${API_BASE_URL}/voice/start`, {
+      const response = await fetch(`${API_BASE_URL}/api/voice/start`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
