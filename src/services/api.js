@@ -12,11 +12,13 @@ const axiosInstance = axios.create({
 });
 
 const chatService = {
-  async sendMessage(message, personality) {
+  async sendMessage(message, personality, language = 'english', systemPrompt = '') {
     try {
-      const response = await axiosInstance.post('/chat/chat', {
+      const response = await axiosInstance.post('/chat', {
         message,
-        personality
+        personality,
+        language,
+        systemPrompt
       });
       return response.data.response;
     } catch (error) {
